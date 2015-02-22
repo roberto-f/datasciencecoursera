@@ -24,7 +24,7 @@ t_all <- rbind(t_train, t_test)
 # Read columns name
 f_text <- read.table("features.txt")
 # remove special chrs from column names
-names(t_all)[3:563] <- str_replace_all(as.character(f_text[,2]), "[[:punct:]]", "")
+names(t_all)[3:length(t_all)] <- str_replace_all(as.character(f_text[,2]), "[[:punct:]]", "")
 library(digest)
 # remove duplicate columns and select only means and std columns
 t_unique <- t_all[!duplicated(lapply(t_all, digest))]
@@ -33,5 +33,5 @@ t_unique <- select(t_unique, subject, activity, contains("mean"), contains("std"
 a_labels <- read.table("activity_labels.txt")
 t_unique$activity <- a_labels[t_unique$activity,2]
 # Produce t_tidy dataframe and wite it to disk
-t_tidy <- aggregate(t_unique[names(t_unique)[3:86]],by=t_unique[c("activity","subject")],FUN=mean)
+t_tidy <- aggregate(t_unique[names(t_unique)[3:length(t_unique)]],by=t_unique[c("activity","subject")],FUN=mean)
 write.table(t_tidy, "t_tidy.txt", row.name=FALSE)
